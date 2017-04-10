@@ -18,22 +18,19 @@ def getTime(n) :
 def getSpecific(timeStamp) : 
     if "d" in timeStamp or "D" in timeStamp : 
         timeStamp = timeStamp.replace("d" or "D", "")
-        return convertToTime(timeStamp, (3600*24))
+        return convert_to_time(timeStamp, (3600*24))
     if "h" in timeStamp or "H" in timeStamp : 
         timeStamp = timeStamp.replace("h" or "H", "")
-        return convertToTime(timeStamp, 3600)
+        return convert_to_time(timeStamp, 3600)
     if "m" in timeStamp or "M" in timeStamp : 
         timeStamp = timeStamp.replace("m" or "M", "")
-        return convertToTime(timeStamp, 60)
+        return convert_to_time(timeStamp, 60)
     if "s" in timeStamp or "S" in timeStamp : 
         timeStamp = timeStamp.replace("s" or "S", "")
 
-    return convertToTime(timeStamp, 1)
+    return convert_to_time(timeStamp, 1)
 
-
-    
-
-def convertToTime(time, multiplier) : 
+def convert_to_time(time, multiplier) : 
     try : 
         seconds = int(time)
         return seconds*multiplier
@@ -41,7 +38,7 @@ def convertToTime(time, multiplier) :
         return 0
 
 #Takes time in seconds, returns formatted string
-def formattedTimeString(time) : 
+def formatted_time_string(time) : 
     days = time // (3600 * 24)
     remains = time - days * (3600 * 24)
     hours = remains // 3600
