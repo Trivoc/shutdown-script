@@ -1,46 +1,50 @@
-import platform
 import time
 import timeInput
-from sys import stdout
+import sys
+import signal
+from platform import system as os
 from subprocess import call
+
+def signal_handler(signal, frame):
+        print('\nCancelling shutdown')
+        sys.exit(0)
 
 def sleepLoop(remainder) : 
     while remainder  > 0 :
         print("    Remaining: " + timeInput.formattedTimeString(remainder) + "    ", end='\r')
         time.sleep(1)
         remainder -= 1
-    stdout.flush()
     print("\nTime up!")
 
+def shutDown() :
+    print("Turning off...")
+    if (os() == "Linux") : 
+        print("welp")
+        #call(["systemctl poweroff", "-i"])
+    if (os() == "Windows") :
+        print("welp2")
+        #call(["shutdown", "/s"])
 
-def countDown(seconds) : 
-    part = seconds % 10
-    time.sleep(part)
-    seconds = seconds - part
-    seconds = sleepLoop(3600, seconds)
-    seconds = sleepLoop(300, seconds)
-    seconds = sleepLoop(10, seconds)
-    print("\nTime up!")
+def inputTime() : 
+    limitStr = input("How long until shutdown? (X Y Z (hours minutes seconds), or q to quit) \n")
 
-if (platform.system() == "Linux") : 
-    print("Identified Linux platform")
+    if(limitStr == ("q" or "Q" or "")) : 
+        print("No time given, quitting!")
+        quit()
+    else : 
+        specTime = timeInput.getTime(limitStr)
+        print("Setting time to " + timeInput.formattedTimeString(specTime) + "\n")
+        call(["stty", "-echo"])
+        sleepLoop(specTime)
+        call(["stty", "echo"])
+        shutDown()
 
-limitStr = input("How long until shutdown? (X Y Z (hours minutes seconds), or q to quit) \n")
-
-if(limitStr == ("q" or "Q" or "")) : 
-    print("No time given, quitting!")
-    quit()
+args = sys.argv
+signal.signal(signal.SIGINT, signal_handler)
+if(len(args) > 1) : 
+    sleepLoop(timeInput.getTime(str(args[1:])))
 else : 
-    specTime = timeInput.getTime(limitStr)
-    print("Setting time to " + timeInput.formattedTimeString(specTime) + "\n")
-    call(["stty", "-echo"])
-    sleepLoop(specTime)
-    call(["stty", "echo"])
-
-
-
-
-#subprocess.call(["shutdown", "/s"])	
+    inputTime()
 
 
 
