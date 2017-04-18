@@ -48,7 +48,7 @@ def formattedTimeString(time) :
     remains = remains - hours * 3600
     minutes = remains // 60 
     remains = remains - minutes * 60
-    seconds = remains
+    seconds = remains 
     return (str(days) + " days, " + 
             str(hours) + " hours, " + 
             str(minutes) + " minutes, " + 

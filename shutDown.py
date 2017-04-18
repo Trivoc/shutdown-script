@@ -11,7 +11,7 @@ def signal_handler(signal, frame):
 
 def sleepLoop(remainder) : 
     while remainder  > 0 :
-        print("    Remaining: " + timeInput.formattedTimeString(remainder) + "    ", end='\r')
+        print("    Remaining: " + timeInput.formattedTimeString(remainder-1) + "    ", end='\r')
         time.sleep(1)
         remainder -= 1
     print("\nTime up!")
@@ -19,8 +19,8 @@ def sleepLoop(remainder) :
 def shutDown() :
     print("Turning off...")
     if (os() == "Linux") : 
-        print("welp")
-        #call(["systemctl poweroff", "-i"])
+        print("welp") #debugging...
+        #call(["systemctl poweroff", "-i"]) 
     if (os() == "Windows") :
         print("welp2")
         #call(["shutdown", "/s"])
@@ -34,9 +34,7 @@ def inputTime() :
     else : 
         specTime = timeInput.getTime(limitStr)
         print("Setting time to " + timeInput.formattedTimeString(specTime) + "\n")
-        call(["stty", "-echo"])
         sleepLoop(specTime)
-        call(["stty", "echo"])
         shutDown()
 
 args = sys.argv
@@ -45,6 +43,6 @@ if(len(args) > 1) :
     sleepLoop(timeInput.getTime(str(args[1:])))
 else : 
     inputTime()
-
+shutDown()
 
 
